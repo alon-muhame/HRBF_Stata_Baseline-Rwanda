@@ -1,0 +1,110 @@
+
+{smcl}
+{* 10apr2007}{...}
+{cmd:help iesummarystats}
+{hline}
+
+{title:Title}
+
+    {hi:[R] iesummarystats}
+
+
+{title:Summary statistics and tests for equality of means for impact evaluation applications}
+
+
+{title:Syntax}
+
+{p 8 17 2}
+{cmdab:iesummarystats}
+[{varlist}]
+[{it:if}]
+{cmd:,} treatment({it:treatmentdummy})
+{cmd:} outputfile({it:filename})
+[{it:options}]
+
+
+{synoptset 20 tabbed}{...}
+{synoptline}
+{syntab:Compulsory specifications}
+
+{synopt:{opt treat:ment(treatmentdummy)}}  	specifies the treatment dummy. , ie the dummy variable that takes value 1 if the observation belongs to the treatment group, and 0 otherwise. This is a compulsory option. {p_end}
+
+{synopt:{opt output:file(filename)}}   		saves the table to file {it:filename}. This is a compulsory option. {p_end}
+
+{syntab:Options}
+
+{synopt:{opt 2as:ter}}   				specifies to use two-aster notation instead of the default three-aster notation.{p_end}
+
+{synopt:{opt browse:}}   				displays the summary stats in a browse table before proceeding.
+
+{synopt:{opt replace:}}  				replaces the existing output tables with newly computed tables.
+
+{synoptline}
+{p2colreset}{...}
+
+
+{title:Description}
+
+{pstd}
+{cmd:iesummarystats} calculates summary statistics and t-tests for equality of means of variables in {varlist} between treatment and comparison group. This command was designed for use in impact evaluation applications. 
+{cmd:Important note} : T-tests for equality of means cannot be clustered. Use svyiesummarystats if data are clustered.
+
+
+{title:Explanation}
+
+{dlgtab:Interpretation of the output table}
+
+{phang}
+{cmd:line} specifies a line number for the variables.
+
+{phang}
+{cmd:variablename} specifies the name of the variable.
+
+{phang}
+{cmd:nobscontrol} specifies the number of observations in the control group for that variable.
+
+{phang}
+{cmd:meancontrol} specifies the mean in the control group for that variable.
+
+{phang}
+{cmd:sdcontrol} specifies the standard deviation in the control group for that variable.
+
+{phang}
+{cmd:nobstreatment} specifies the number of observations in the treatment group for that variable.
+
+{phang}
+{cmd:meantreatment} specifies the mean in the treatment group for that variable.
+
+{phang}
+{cmd:sdtreatment} specifies the standard deviation in the control group for that variable.
+
+{phang}
+{cmd:difference} specifies the difference between the treatment group and the control group for that variable.
+
+{phang}
+{cmd:tstat} specifies the t-stat for the test of equality of means between the treatment and the control group.
+
+{phang}
+{cmd:stars} specifies the number of stars corresponding to the two-sided t-test. 
+
+{title:Remarks}
+
+{pstd}
+Author: Christel Vermeersch
+
+{pstd}
+Date: 17 March 2011
+
+{pstd}
+Version: 2.0
+
+{pstd}
+Stata Version: 10.1
+
+{pstd}
+If you have comments or suggestions, please email cvermeersch@worldbank.org.
+
+
+{title:Examples}
+
+{phang}iesummarystats age socioecostatus weight, treatment(intervention) outputfile(mysumstats) replace

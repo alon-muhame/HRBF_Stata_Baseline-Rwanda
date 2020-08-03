@@ -1,0 +1,1909 @@
+-------------------------------------------------------------------------------------------------------------------------
+       log:  L:/Rwanda Household Report/UpdatedGraphs/bargraphci.log
+  log type:  text
+ opened on:  29 Nov 2011, 15:50:52
+
+. set more off
+
+. 
+. //replace a1_12=7 if a1_12==96;   
+. 
+. *Average Size of Household
+. use "$cleandatadir/rwhrbf_a01_withstudyarms_withvarformeantests.dta"
+
+. //Part 1 Creates Mean, SD, and n with appropiate weighting and clustering.
+. gen wmean = .
+(11903 missing values generated)
+
+. gen wse = .
+(11903 missing values generated)
+
+. gen wn = .
+(11903 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a1_hhsize  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     545
+Number of PSUs   =      50          Population size  =  184299
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a1_hhsize |    5.00743    .089882      4.826805    5.188055
+--------------------------------------------------------------
+(3028 real changes made)
+(3028 real changes made)
+(3028 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     570
+Number of PSUs   =      50          Population size  =  221854
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a1_hhsize |   4.904118   .1165217      4.669958    5.138277
+--------------------------------------------------------------
+(2969 real changes made)
+(2969 real changes made)
+(2969 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     556
+Number of PSUs   =      50          Population size  =  218696
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a1_hhsize |   5.032193   .1222783      4.786465     5.27792
+--------------------------------------------------------------
+(3031 real changes made)
+(3031 real changes made)
+(3031 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     529
+Number of PSUs   =      48          Population size  =  186974
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a1_hhsize |   5.010904   .1106409      4.788323    5.233485
+--------------------------------------------------------------
+(2875 real changes made)
+(2875 real changes made)
+(2875 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. graph twoway (bar mean group_code if group_code==1) /// 
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Average Size of Households", span) subtitle("By Treatment Group", span)  ///
+>         ylabel(0(1)6) xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Mean Family Size") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a01_hhsize.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a01_hhsize.emf written in Enhanced Metafile format)
+
+. 
+. clear
+
+. 
+. *Insurance Coverage by Study Arm
+. use "$cleandatadir/rwhrbf_a01_withstudyarms_withvarformeantests.dta"
+
+. gen wmean = .
+(11903 missing values generated)
+
+. gen wse = .
+(11903 missing values generated)
+
+. gen wn = .
+(11903 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a1_20_01  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =    2733
+Number of PSUs   =      50          Population size  =  913170
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a1_20_01 |   .7714639   .0186514      .7339825    .8089453
+--------------------------------------------------------------
+(3028 real changes made)
+(3028 real changes made)
+(3028 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1         Number of obs    =     2785
+Number of PSUs   =      50         Population size  =  1077686
+                                   Design df        =       49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a1_20_01 |   .7297443   .0178047      .6939644    .7655241
+--------------------------------------------------------------
+(2969 real changes made)
+(2969 real changes made)
+(2969 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1         Number of obs    =     2808
+Number of PSUs   =      50         Population size  =  1096405
+                                   Design df        =       49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a1_20_01 |   .7543784   .0213609       .711452    .7973048
+--------------------------------------------------------------
+(3031 real changes made)
+(3031 real changes made)
+(3031 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =    2631
+Number of PSUs   =      48          Population size  =  934590
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a1_20_01 |   .7256278   .0193582      .6866841    .7645716
+--------------------------------------------------------------
+(2875 real changes made)
+(2875 real changes made)
+(2875 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. twoway(bar mean group_code if group_code==1) /// 
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Insurance coverage of All Participants", span) subtitle("By Treatment Group", span) ///
+>         ylabel(0(.2)1) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Proportion Currently Covered by Mutuelle") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a01_mutuellecoverage.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a01_mutuellecoverage.emf written in Enhanced Metafile format)
+
+. 
+. clear
+
+. 
+. *Daily Pay in Primary Activity (Difficult to add Secondary Activity) 
+. use "$cleandatadir/rwhrbf_a03_withstudyarms_withvarformeantests.dta"
+
+. preserve
+
+. keep if a1_11a>11
+(5775 observations deleted)
+
+. gen wmean = .
+(6128 missing values generated)
+
+. gen wse = .
+(6128 missing values generated)
+
+. gen wn = .
+(6128 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a3_04_1  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     780
+Number of PSUs   =      50          Population size  =  257122
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_04_1 |   527.4591    81.7876      363.1007    691.8174
+--------------------------------------------------------------
+(1547 real changes made)
+(1547 real changes made)
+(1547 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     812
+Number of PSUs   =      50          Population size  =  327015
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_04_1 |   759.8947    151.112      456.2239    1063.566
+--------------------------------------------------------------
+(1558 real changes made)
+(1558 real changes made)
+(1558 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     816
+Number of PSUs   =      50          Population size  =  309187
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_04_1 |   511.5602   64.22512       382.495    640.6254
+--------------------------------------------------------------
+(1541 real changes made)
+(1541 real changes made)
+(1541 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     762
+Number of PSUs   =      48          Population size  =  272875
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_04_1 |   626.4787   139.5283      345.7839    907.1735
+--------------------------------------------------------------
+(1482 real changes made)
+(1482 real changes made)
+(1482 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Daily Pay in Primary Activity in Last 12m (12y and Older)", span) subtitle("By Treatment Group", span) /
+> //
+>         ylabel(0(200)1200) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Daily Pay (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a03_prim_dailypay.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a03_prim_dailypay.emf written in Enhanced Metafile format)
+
+. 
+. clear
+
+. restore
+
+. **Secondary Pay
+. keep if a1_11a>11
+(5775 observations deleted)
+
+. gen wmean = .
+(6128 missing values generated)
+
+. gen wse = .
+(6128 missing values generated)
+
+. gen wn = .
+(6128 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a3_11_1  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      67
+Number of PSUs   =      33          Population size  = 21188.8
+                                    Design df        =      32
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_11_1 |   786.6492   186.7158      406.3214    1166.977
+--------------------------------------------------------------
+(1547 real changes made)
+(1547 real changes made)
+(1547 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      86
+Number of PSUs   =      37          Population size  = 35967.4
+                                    Design df        =      36
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_11_1 |   1161.158    490.555      166.2664     2156.05
+--------------------------------------------------------------
+(1558 real changes made)
+(1558 real changes made)
+(1558 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      87
+Number of PSUs   =      37          Population size  = 30568.7
+                                    Design df        =      36
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_11_1 |   400.6325   52.52781      294.1012    507.1639
+--------------------------------------------------------------
+(1541 real changes made)
+(1541 real changes made)
+(1541 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      74
+Number of PSUs   =      31          Population size  = 25790.8
+                                    Design df        =      30
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+     a3_11_1 |   960.3034   449.2487       42.8152    1877.792
+--------------------------------------------------------------
+(1482 real changes made)
+(1482 real changes made)
+(1482 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Daily Pay in Secondary Activity in Last 12m (12y and Older)", span) subtitle("By Treatment Group", span)
+>  ///
+>         ylabel(0(400)2400) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Daily Pay (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a03_sec_dailypay.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a03_sec_dailypay.emf written in Enhanced Metafile format)
+
+. clear
+
+. *Not Including Secondary because of Smaller Sample Size
+. //graph dot a3_11_1 [pweight=hhpweight], over(group_code) title("Daily pay in secondary activity in last 12m in RWF by 
+> treatment group", size(medsmall) span) subtitle("12y and older", size(medsmall) span) ytitle("Daily pay in RWF");
+. //graph export a03_daily_pay_sec_1, as(pdf) replace;
+. 
+. *Current Value of Total Material Assets
+. use "$cleandatadir/rwhrbf_a05_with_1obs_for_1hh_withstudyarms_withvarformeantests.dta"
+
+. 
+. gen wmean = .
+(2376 missing values generated)
+
+. gen wse = .
+(2376 missing values generated)
+
+. gen wn = .
+(2376 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a6_02_100  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     545
+Number of PSUs   =      50          Population size  =  184299
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a6_02_100 |   65096.02    7636.06      49750.78    80441.26
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     570
+Number of PSUs   =      50          Population size  =  221854
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a6_02_100 |   74807.05   9861.117      54990.39     94623.7
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     556
+Number of PSUs   =      50          Population size  =  218696
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a6_02_100 |   78634.41    11796.8      54927.85      102341
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     529
+Number of PSUs   =      48          Population size  =  186974
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a6_02_100 |   69527.43   9844.713      49722.42    89332.43
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Current Value of Material Assets", span) subtitle("By Treatment Group", span) ///
+>         ylabel(0(25000)102000) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Value of Assets (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a05_value_materassets.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a05_value_materassets.emf written in Enhanced Metafile format)
+
+. 
+. clear
+
+. 
+. *Income Outside of Employment by Treatment Group
+. 
+. use "$cleandatadir/rwhrbf_a07_with_1obs_for_1hh_withstudyarms_withvarformeantests.dta"
+
+. 
+. gen wmean = .
+(2376 missing values generated)
+
+. gen wse = .
+(2376 missing values generated)
+
+. gen wn = .
+(2376 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a7_01_100  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     545
+Number of PSUs   =      50          Population size  =  184299
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a7_01_100 |   71697.78   24987.03      21484.46    121911.1
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     570
+Number of PSUs   =      50          Population size  =  221854
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a7_01_100 |   40192.12   9278.988      21545.29    58838.94
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     556
+Number of PSUs   =      50          Population size  =  218696
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a7_01_100 |   36145.85   9311.065      17434.56    54857.13
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     529
+Number of PSUs   =      48          Population size  =  186974
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   a7_01_100 |   41277.85   9205.667      22758.44    59797.27
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Income Outside of Employment", span) subtitle("By Treatment Group", span) ///
+>         ylabel(0(25000)120000) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Income Outside of Employment (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a07_income_outsideemploy.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a07_income_outsideemploy.emf written in Enhanced Metafile format)
+
+.         
+. clear
+
+. 
+. *Age of the Most Recently Deceased IndividualBy Study Arm
+. use "$cleandatadir/rwhrbf_a08_with_1obs_for_1hh_withstudyarms_withvarformeantests.dta"
+
+. 
+. 
+. 
+. gen wmean = .
+(2376 missing values generated)
+
+. gen wse = .
+(2376 missing values generated)
+
+. gen wn = .
+(2376 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a9_06n_1_1  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      10
+Number of PSUs   =      10          Population size  = 3256.08
+                                    Design df        =       9
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+  a9_06n_1_1 |   .8884425   .5334872     -.3183894    2.095274
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      17
+Number of PSUs   =      13          Population size  = 4769.92
+                                    Design df        =      12
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+  a9_06n_1_1 |   .9688836   .4309945      .0298271     1.90794
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      18
+Number of PSUs   =      15          Population size  = 7390.08
+                                    Design df        =      14
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+  a9_06n_1_1 |   2.878505   .5963261      1.599513    4.157498
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =       9
+Number of PSUs   =       9          Population size  = 2843.83
+                                    Design df        =       8
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+  a9_06n_1_1 |   1.277983   .6881487     -.3088907    2.864857
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. //Cannot have a negative value for age..
+. replace lo = 0 if lo<0 
+(2 real changes made)
+
+. 
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Average Age of Death", span) subtitle("By Treatment Group", span) ///
+>         ylabel(0(1)5)  ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Age of the Most Recently Deceased Individual (Years)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a08_Age_mostrecdeath.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a08_Age_mostrecdeath.emf written in Enhanced Metafile format)
+
+.         
+. clear
+
+.         
+. *Number of Days of Illness if Recovered
+. 
+. use "$cleandatadir/rwhrbf_b01_withstudyarms_withvarformeantests.dta" 
+
+. keep if a1_11a>=15 & a1_11a<=49 & a1_02==2
+(9073 observations deleted)
+
+. gen wmean = .
+(2830 missing values generated)
+
+. gen wse = .
+(2830 missing values generated)
+
+. gen wn = .
+(2830 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean b10_07a_4  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      53
+Number of PSUs   =      30          Population size  = 21560.5
+                                    Design df        =      29
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   b10_07a_4 |   20.64399   3.415461      13.65858    27.62939
+--------------------------------------------------------------
+(699 real changes made)
+(699 real changes made)
+(699 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      48
+Number of PSUs   =      34          Population size  = 17502.4
+                                    Design df        =      33
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   b10_07a_4 |   52.93458   28.04481     -4.123024    109.9922
+--------------------------------------------------------------
+(719 real changes made)
+(719 real changes made)
+(719 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      47
+Number of PSUs   =      23          Population size  = 15865.9
+                                    Design df        =      22
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   b10_07a_4 |   35.44936   13.66829      7.103059    63.79567
+--------------------------------------------------------------
+(720 real changes made)
+(720 real changes made)
+(720 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      44
+Number of PSUs   =      27          Population size  = 16432.3
+                                    Design df        =      26
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+   b10_07a_4 |   19.09428   3.818842      11.24453    26.94402
+--------------------------------------------------------------
+(692 real changes made)
+(692 real changes made)
+(692 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. *Cannot have Negative Illness days
+. replace lo = 0 if lo<0
+(1 real change made)
+
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Length of Illness if Recoverd", span) subtitle("Women 15-49 by Treatment Group", span) ///
+>         ylabel(0(25)125)  ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Length of Illness (Days)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/b01_days_ofillnessrecovered.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/b01_days_ofillnessrecovered.emf written in Enhanced Metafile format
+> )
+
+.         
+. clear
+
+.         
+. *Value of Gift Received at First ANC Visit
+. use "$cleandatadir/rwhrbf_b06_withstudyarms_withvarformeantests.dta"
+
+. keep if a1_11a>=15 & a1_11a<=49 & a1_02==2
+(4 observations deleted)
+
+. gen wmean = .
+(2368 missing values generated)
+
+. gen wse = .
+(2368 missing values generated)
+
+. gen wn = .
+(2368 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean b13_040b  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      30
+Number of PSUs   =      17          Population size  = 10502.6
+                                    Design df        =      16
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_040b |   749.3257   88.82903      561.0165    937.6348
+--------------------------------------------------------------
+(595 real changes made)
+(595 real changes made)
+(595 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      22
+Number of PSUs   =      17          Population size  = 7665.25
+                                    Design df        =      16
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_040b |   904.9063   181.0525      521.0921    1288.721
+--------------------------------------------------------------
+(599 real changes made)
+(599 real changes made)
+(599 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      27
+Number of PSUs   =      18          Population size  =  9761.5
+                                    Design df        =      17
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_040b |   815.4365   102.6251      598.9165    1031.956
+--------------------------------------------------------------
+(598 real changes made)
+(598 real changes made)
+(598 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      19
+Number of PSUs   =      15          Population size  = 7397.08
+                                    Design df        =      14
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_040b |     852.63   239.3463      339.2833    1365.977
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Value of Gift Received at First ANC Visit by Treatment Arm", span) subtitle(" Women 15-49 Pregnant or ha
+> d Pregnancy Since Jan 08", span) ///
+>         ylabel(0(400)1600)  ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Value of Gift (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/b06_giftvalue_firstANCvisit.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/b06_giftvalue_firstANCvisit.emf written in Enhanced Metafile format
+> )
+
+.         
+. clear
+
+.         
+. *Value of Gift Received at First PNC Visit
+. //Almost no Sample Size so will not produce a graph
+. use "$cleandatadir/rwhrbf_b06_withstudyarms_withvarformeantests.dta"
+
+. keep if a1_11a>=15 & a1_11a<=49 & a1_02==2
+(4 observations deleted)
+
+. 
+. gen wmean = .
+(2368 missing values generated)
+
+. gen wse = .
+(2368 missing values generated)
+
+. gen wn = .
+(2368 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean b13_083b   if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =       1
+Number of PSUs   =       1          Population size  = 1341.67
+                                    Design df        =       0
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_083b |       6300          .             .           .
+--------------------------------------------------------------
+Note: missing standard error because of stratum with single
+      sampling unit.
+(595 real changes made)
+(595 real changes made)
+(595 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =       2
+Number of PSUs   =       2          Population size  = 685.667
+                                    Design df        =       1
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_083b |     356.49   149.7192     -1545.873    2258.853
+--------------------------------------------------------------
+(599 real changes made)
+(599 real changes made)
+(599 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =       3
+Number of PSUs   =       3          Population size  = 1366.67
+                                    Design df        =       2
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_083b |   3060.567   2772.583     -8868.897    14990.03
+--------------------------------------------------------------
+(598 real changes made)
+(598 real changes made)
+(598 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =       2
+Number of PSUs   =       2          Population size  = 681.667
+                                    Design df        =       1
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_083b |   482.8851   439.9902      -5107.72    6073.491
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+(1 missing value generated)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+(1 missing value generated)
+
+. //Cannot Have negative Cash
+. replace lo = 0 if lo<0
+(3 real changes made)
+
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Value of Gift Received at First PNC Visit by Treatment Arm", span) subtitle(" Women 15-49 Pregnant or ha
+> d Pregnancy Since Jan 08", span) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Value of Gift (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/b06_giftvalue_firstPNCvisit.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/b06_giftvalue_firstPNCvisit.emf written in Enhanced Metafile format
+> )
+
+.         
+. clear
+
+. 
+. 
+. *Value of Gift Received at Delivery by Treatment Group
+. use "$cleandatadir/rwhrbf_b06_withstudyarms_withvarformeantests.dta"
+
+. keep if a1_11a>=15 & a1_11a<=49 & a1_02==2
+(4 observations deleted)
+
+. 
+. gen wmean = .
+(2368 missing values generated)
+
+. gen wse = .
+(2368 missing values generated)
+
+. gen wn = .
+(2368 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean b13_061b  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      20
+Number of PSUs   =      14          Population size  = 4646.25
+                                    Design df        =      13
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_061b |     1384.1   527.1827      245.1911    2523.009
+--------------------------------------------------------------
+(595 real changes made)
+(595 real changes made)
+(595 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      31
+Number of PSUs   =      17          Population size  = 7748.92
+                                    Design df        =      16
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_061b |   1974.215   1120.098     -400.2872    4348.717
+--------------------------------------------------------------
+(599 real changes made)
+(599 real changes made)
+(599 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      15
+Number of PSUs   =       9          Population size  = 3969.67
+                                    Design df        =       8
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_061b |   636.5429   147.5828      296.2164    976.8695
+--------------------------------------------------------------
+(598 real changes made)
+(598 real changes made)
+(598 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =      11
+Number of PSUs   =       7          Population size  = 2922.67
+                                    Design df        =       6
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    b13_061b |   791.2751   304.5214      46.13814    1536.412
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. *Cannot Have negative Gift
+. replace lo = 0 if lo<0
+(1 real change made)
+
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Value of Gift Received at Delivery Visit by Treatment Arm", span) subtitle(" Women 15-49 Pregnant or had
+>  Pregnancy Since Jan 08", span) ///
+>         ylabel(0(1000)5000)  ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Value of Gift (RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/b06_giftvalue_delivery.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/b06_giftvalue_delivery.emf written in Enhanced Metafile format)
+
+. 
+. clear
+
+. 
+. 
+. *Size Of Land
+. 
+. use "$cleandatadir/rwhrbf_a00_withstudyarms_withvarformeantests.dta"
+
+. 
+. gen wmean = .
+(2376 missing values generated)
+
+. gen wse = .
+(2376 missing values generated)
+
+. gen wn = .
+(2376 missing values generated)
+
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. foreach x of numlist 1/4 {
+  2.         svy: mean a6_06n_2  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     312
+Number of PSUs   =      50          Population size  = 96501.9
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a6_06n_2 |   13.07975   2.860908      7.330538    18.82896
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     305
+Number of PSUs   =      50          Population size  =  117364
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a6_06n_2 |   19.92173   9.092454      1.649764     38.1937
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     315
+Number of PSUs   =      50          Population size  =  124426
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a6_06n_2 |   25.64333    12.4334      .6574742    50.62918
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     323
+Number of PSUs   =      48          Population size  =  112049
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+    a6_06n_2 |   26.08005   10.39236      5.173329    46.98678
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. list n
+
+     +-----+
+     |   n |
+     |-----|
+  1. | 312 |
+  2. | 305 |
+  3. | 315 |
+  4. | 323 |
+     +-----+
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Size of Land Owned", span) subtitle("By Treatment Group", span) ///
+>         ylabel(0(10)50) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Size of Land Owned (ha)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a05_size_land.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a05_size_land.emf written in Enhanced Metafile format)
+
+. 
+. clear
+
+. 
+. 
+. 
+. 
+. *Current Value of Land Owned
+. 
+. 
+. use "$cleandatadir/rwhrbf_a00_withstudyarms_withvarformeantests.dta"
+
+. 
+. gen wmean = .
+(2376 missing values generated)
+
+. gen wse = .
+(2376 missing values generated)
+
+. gen wn = .
+(2376 missing values generated)
+
+. replace a6_07 = a6_07 /100000
+(1673 real changes made)
+
+. 
+. svyset [pweight=hhpweight], psu(hrbf_id1)
+
+      pweight: hhpweight
+          VCE: linearized
+  Single unit: missing
+     Strata 1: <one>
+         SU 1: hrbf_id1
+        FPC 1: <zero>
+
+. 
+. foreach x of numlist 1/4 {
+  2.         svy: mean a6_07  if group_code == `x'
+  3.         mat a= e(b)
+  4.         mat b= el(e(V),1,1)^(1/2)
+  5.         scalar m`x'= a[1,1]
+  6.         scalar y`x'= b[1,1]
+  7.         replace wmean = m`x' if group_code==`x'
+  8.         replace wse = y`x' if group_code==`x'
+  9.         replace wn = e(N) if group_code==`x'
+ 10. }
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     392
+Number of PSUs   =      50          Population size  =  126149
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+       a6_07 |   13.29271   2.684119      7.898768    18.68664
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     384
+Number of PSUs   =      50          Population size  =  148307
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+       a6_07 |   15.37529   3.331653      8.680083     22.0705
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     390
+Number of PSUs   =      50          Population size  =  156061
+                                    Design df        =      49
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+       a6_07 |   15.89617   4.659994      6.531557    25.26077
+--------------------------------------------------------------
+(600 real changes made)
+(600 real changes made)
+(600 real changes made)
+(running mean on estimation sample)
+
+Survey: Mean estimation
+
+Number of strata =       1          Number of obs    =     391
+Number of PSUs   =      48          Population size  =  139217
+                                    Design df        =      47
+
+--------------------------------------------------------------
+             |             Linearized
+             |       Mean   Std. Err.     [95% Conf. Interval]
+-------------+------------------------------------------------
+       a6_07 |   12.96333   2.011678      8.916351     17.0103
+--------------------------------------------------------------
+(576 real changes made)
+(576 real changes made)
+(576 real changes made)
+
+. 
+. collapse  mean=wmean sd=wse n=wn, by(group_code)
+
+. list n
+
+     +-----+
+     |   n |
+     |-----|
+  1. | 392 |
+  2. | 384 |
+  3. | 390 |
+  4. | 391 |
+     +-----+
+
+. 
+. 
+. generate hi = mean + invttail(n-1,0.025)*(sd)
+
+. generate lo = mean - invttail(n-1,0.025)*(sd)
+
+. 
+. 
+. twoway (bar mean group_code if group_code==1) ///
+>         (bar mean group_code if group_code==2) ///
+>         (bar mean group_code if group_code==3) ///
+>         (bar mean group_code if group_code==4) ///
+>         (rcap hi lo group_code, color(black)), ///
+>         legend(off) ///
+>         title("Current Value of Land Owned", span) subtitle("By Treatment Group", span) ///
+>         ylabel(0(5)25) ///
+>         xlabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control") ///
+>         xtitle("") ytitle("Value of Land Owned (100,000 RWF)") ///
+>         note("Source: Authors", span)
+
+.         graph export "$rwandaupdatedgraphs/a05_value_land.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a05_value_land.emf written in Enhanced Metafile format)
+
+. 
+. 
+. ******* Original vs Current Value  Land
+. 
+. use "$cleandatadir/rwhrbf_a06_with_1obs_for_1hh_withstudyarms_withvarformeantests.dta", clear
+
+. graph bar a6_12_100 a6_13_100, over(group_code, relabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control")) title("
+> Original vs. Current Value of Livestock", span)  subtitle("By Treatment Group", span) ytitle("Value (RWF)") legend(labe
+> l(1 "Value at Purchase") label(2 "Current Estimated Value"))
+
+. graph export "$rwandaupdatedgraphs/a06_livestockvalue.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a06_livestockvalue.emf written in Enhanced Metafile format)
+
+. clear
+
+. ***** Health Score by TG and Gender*
+. use $cleandatadir/rwhrbf_a04_b08_withstudyarms_withvarformeantests.dta, clear
+
+. keep if a1_11a>=15 & a1_11a<=49
+(6598 observations deleted)
+
+. graph bar a4_healthscore, over(a1_02) over(group_code, relabel(1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control")) 
+> title("Health Knowledge Score by Gender and Treatment Group", span) subtitle("All Aged 15-49", span) ytitle("Health Kno
+> wledge Score (0-1)") ylabel(0(.2)1)
+
+. graph export "$rwandaupdatedgraphs/a04_b08_healthscore_2.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/a04_b08_healthscore_2.emf written in Enhanced Metafile format)
+
+. 
+. 
+. 
+. *****************************
+. *** Section 11: Mental Health
+. *****************************
+. 
+. use "$cleandatadir/rwhrbf_b02_withstudyarms_withvarformeantests.dta", clear
+
+. preserve
+
+. 
+. keep if a1_11a>=15 & a1_11a<=49 & a1_02==2
+(9073 observations deleted)
+
+. lab define group_code_lab 1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control"
+
+. lab values group_code group_code_lab
+
+. 
+. graph bar b11_01a_1 b11_01a_2 b11_01a_3 [pweight=hhpweight], over(group_code, relabel(1 "Demand" 2 "Supply" 3 "Demand &
+>  Supply" 4 "Control")) ylabel(0(.2)1) title("Feeling Slowed Down in Last 6m", span) subtitle("Women 15-49 by Treatment 
+> Group", span) ytitle("Proportion of Women with Feeling for 2 Weeks")  legend(label(1 "Often") label(2 "Sometimes") labe
+> l(3 "Never") rows(1))
+
+. graph export "$rwandaupdatedgraphs/mentalhealth1.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/mentalhealth1.emf written in Enhanced Metafile format)
+
+. 
+. graph bar b11_01b_1 b11_01b_2 b11_01b_3 [pweight=hhpweight], over(group_code, relabel(1 "Demand" 2 "Supply" 3 "Demand &
+>  Supply" 4 "Control")) ylabel(0(.2)1) title("Feeling Deep Sadness in Last 6m", span) subtitle("Women 15-49 by Treatment
+>  Group", span) ytitle("Proportion of Women with Feeling for 2 Weeks")  legend(label(1 "Often") label(2 "Sometimes") lab
+> el(3 "Never") rows(1))
+
+. graph export "$rwandaupdatedgraphs/mentalhealth2.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/mentalhealth2.emf written in Enhanced Metafile format)
+
+. 
+. graph bar b11_01c_1 b11_01c_2 b11_01c_3 [pweight=hhpweight], over(group_code, relabel(1 "Demand" 2 "Supply" 3 "Demand &
+>  Supply" 4 "Control")) ylabel(0(.2)1) title("Feeling No More Joy in Life in Last 6m", span) subtitle("Women 15-49 by Tr
+> eatment Group", span) ytitle("Proportion of Women with Feeling for 2 Weeks") yscale(titlegap(*2)) legend(label(1 "Often
+> ") label(2 "Sometimes") label(3 "Never") rows(1))
+
+. graph export "$rwandaupdatedgraphs/mentalhealth3.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/mentalhealth3.emf written in Enhanced Metafile format)
+
+. 
+. graph bar b11_01d_1 b11_01d_2 b11_01d_3 [pweight=hhpweight], over(group_code, relabel(1 "Demand" 2 "Supply" 3 "Demand &
+>  Supply" 4 "Control")) ylabel(0(.2)1) title("Feeling Hopeless in Last 6m", span) subtitle("Women 15-49 by Treatment Gro
+> up", span) ytitle("Proportion of Women with Feeling for 2 Weeks")  legend(label(1 "Often") label(2 "Sometimes") label(3
+>  "Never") rows(1))
+
+. graph export "$rwandaupdatedgraphs/mentalhealth4.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/mentalhealth4.emf written in Enhanced Metafile format)
+
+. 
+. restore
+
+. *************************
+. use "$cleandatadir/rwhrbf_b06_withstudyarms_withvarformeantests.dta", clear
+
+. preserve
+
+. keep if a1_11a>=15 & a1_11a<=49 & a1_02==2
+(4 observations deleted)
+
+. lab define group_code_lab 1 "Demand" 2 "Supply" 3 "Demand & Supply" 4 "Control"
+
+. lab values group_code group_code_lab
+
+. 
+. graph bar b13_044_1 [pweight=hhpweight], over(group_code) ylabel(0(.2)1) title("Minimum Tests Performed at ANC During P
+> regnancy", span size(medsmall)) subtitle("Women 15-49 Pregnant or Had Pregnancy Since Jan 08 by Treatment Group", span 
+> size(medsmall)) ytitle("Proportion of Births/Pregnancies" "That Had Minimum Tests Performed")
+
+. graph export "$rwandaupdatedgraphs/b06_minimumANCtest.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/b06_minimumANCtest.emf written in Enhanced Metafile format)
+
+. 
+. capture, log close
+
+. 
+end of do-file
+
+
+. graph bar b13_044_1 [pweight=hhpweight], over(group_code) ylabel(0(.2)1) title("Minimum Tests Performed at ANC During P
+> regnancy", span) subtitle("Women 15-49 Pregnant or Had Pregnancy Since Jan 08 by Treatment Group", span size(medsmall))
+>  ytitle("Proportion of Births/Pregnancies" "That Had Minimum Tests Performed")
+
+. graph export "$rwandaupdatedgraphs/b06_minimumANCtest.emf", replace
+(file L:/Rwanda Household Report/UpdatedGraphs\Graphs/b06_minimumANCtest.emf written in Enhanced Metafile format)
+
+. exit, clear
